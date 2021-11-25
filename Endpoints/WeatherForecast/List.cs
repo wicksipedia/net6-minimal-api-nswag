@@ -1,13 +1,12 @@
-// File: sample/SampleEndpointApp/Endpoints/Authors/List.cs
 namespace api.Endpoints.WeatherForecastEndpoints;
 
 using Ardalis.ApiEndpoints;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
+using NSwag.Annotations;
 
-public class Get : BaseAsyncEndpoint
+public class Get : EndpointBaseAsync
     .WithoutRequest
-    .WithResponse<WeatherForecastResult>
+    .WithResult<WeatherForecastResult>
 {
     string[] Summaries = new[]
     {
@@ -15,13 +14,13 @@ public class Get : BaseAsyncEndpoint
     };
 
     [HttpGet("/WeatherForecast")]
-    [SwaggerOperation(
-        Summary = "List all weather forecasts",
-        Description = "List all weather forecasts",
-        OperationId = "WeatherForecast.List",
-        Tags = new[] { "WeatherForecastEndpoint" })
-    ]
-    public override async Task<ActionResult<WeatherForecastResult>> HandleAsync(
+    [OpenApiOperation(
+        "WeatherForecast.List",
+        "List all weather forecasts",
+        "List all weather forecasts"
+    )]
+    [OpenApiTag("WeatherForecastEndpoint")]
+    public override async Task<WeatherForecastResult> HandleAsync(
         CancellationToken cancellationToken = default)
     {
         await Task.CompletedTask;
@@ -38,6 +37,6 @@ public class Get : BaseAsyncEndpoint
             Forecasts = forecasts.ToList()
         };
 
-        return Ok(result);
+        return result;
     }
 }
